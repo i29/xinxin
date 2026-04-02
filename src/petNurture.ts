@@ -14,21 +14,15 @@ import {
   renderPetAvatar,
 } from './petData';
 import {
-  spawnFloatingEmoji,
-  spawnFloatingText,
-  burstParticles,
   initTiltEffect,
   updateEnvironment,
-  shakeElement,
   updateFacilityIcons,
-  renderHabitat,
   updatePetShadow,
 } from './animations';
 import { trackAutoTask } from './taskSystem';
 
 let decayTimer: ReturnType<typeof setInterval> | null = null;
-let wanderingTimer: ReturnType<typeof setInterval> | null = null;
-let isInteracting = false;
+let flipTimer: ReturnType<typeof setInterval> | null = null;
 
 export function initPetNurture() {
   const pet = getActivePet();
@@ -36,8 +30,6 @@ export function initPetNurture() {
     const species = getSpecies()!;
     updateEnvironment(pet.speciesId, pet.stageIndex);
     updateFacilityIcons(species);
-    renderHabitat(species);
-    startWandering();
   }
   updatePetUI();
 
@@ -48,10 +40,26 @@ export function initPetNurture() {
     updatePetUI();
   }, 60000); // every 60s
 
+  // Start random flip timer for idle animation
+  if (flipTimer) clearInterval(flipTimer);
+  flipTimer = setInterval(() => {
+    const petAvatar = document.getElementById('pet-avatar')!;
+    if (petAvatar && !petAvatar.classList.contains('wandering')) {
+      // Randomly flip the pet left or right (30% chance)
+      if (Math.random() < 0.3) {
+        const shouldFlip = Math.random() > 0.5;
+        if (shouldFlip) {
+          petAvatar.classList.add('flip-h');
+        } else {
+          petAvatar.classList.remove('flip-h');
+        }
+      }
+    }
+  }, 8000 + Math.random() * 7000); // Check every 8-15 seconds, only flip 30% of the time
+
   // Navigation
   const navAdventure = document.getElementById('nav-adventure')!;
   navAdventure.onclick = () => {
-    stopWandering();
     getState().phase = 'adventure';
     notify();
   };
@@ -59,11 +67,11 @@ export function initPetNurture() {
   // Pet click interaction
   const petAvatar = document.getElementById('pet-avatar')!;
   petAvatar.addEventListener('click', () => {
-    const display = document.getElementById('pet-display')!;
-    spawnFloatingEmoji(display, '❤️');
-    petAvatar.style.transform = 'scale(1.1)';
+    petAvatar.classList.remove('micro-move');
+    void petAvatar.offsetWidth;
+    petAvatar.classList.add('micro-move');
     setTimeout(() => {
-      petAvatar.style.transform = '';
+      petAvatar.classList.remove('micro-move');
     }, 200);
   });
 
@@ -84,7 +92,7 @@ export function initPetNurture() {
       else if (itemDef.type === 'toy') facilityType = 'toy';
       else if (itemDef.type === 'soap') facilityType = 'wash';
 
-      performInteraction(facilityType, itemDef);
+      performInteraction(facilityType);
 
       // Track auto tasks
       if (itemDef.type === 'food') {
@@ -158,7 +166,7 @@ export function updatePetUI() {
   document.getElementById('pet-mood')!.textContent = getMoodEmoji(pet.hunger, pet.happy, pet.clean);
 
   // Initial Shadow Sync
-  updatePetShadow(avatar.style.left || '50%', avatar.style.top || '75%');
+  updatePetShadow(avatar.style.left || '50%', avatar.style.top || '50%');
 
   // Multi-Pet Slots
   renderPetSlots();
@@ -234,52 +242,14 @@ export function cleanupNurture() {
     clearInterval(decayTimer);
     decayTimer = null;
   }
-  stopWandering();
-}
-
-function startWandering() {
-  if (wanderingTimer) return;
-
-  const move = () => {
-    if (isInteracting) return;
-    const pet = document.getElementById('pet-avatar');
-    if (!pet) return;
-
-    // Random position within stage (20% to 80%)
-    const newX = 20 + Math.random() * 60;
-    const newY = 65 + Math.random() * 20;
-
-    // Determine direction
-    const currentX = parseFloat(pet.style.left) || 50;
-    if (newX < currentX) pet.classList.add('flip-h');
-    else pet.classList.remove('flip-h');
-
-    pet.style.left = `${newX}%`;
-    pet.style.top = `${newY}%`;
-    pet.classList.add('wandering');
-
-    // Sync Shadow
-    updatePetShadow(`${newX}%`, `${newY}%`);
-
-    // Stop walking animation after transition
-    setTimeout(() => pet.classList.remove('wandering'), 2000);
-  };
-
-  move();
-  wanderingTimer = setInterval(move, 20000 + Math.random() * 15000); // Increased interval
-}
-
-function stopWandering() {
-  if (wanderingTimer) {
-    clearInterval(wanderingTimer);
-    wanderingTimer = null;
+  if (flipTimer) {
+    clearInterval(flipTimer);
+    flipTimer = null;
   }
 }
 
-async function performInteraction(type: 'food' | 'toy' | 'wash', itemDef: any) {
-  isInteracting = true;
+async function performInteraction(type: 'food' | 'toy' | 'wash') {
   const pet = document.getElementById('pet-avatar')!;
-  const display = document.getElementById('pet-display')!;
   const facility = document.getElementById(`facility-${type}`)!;
 
   // 1. Position facility randomly but near center
@@ -303,41 +273,15 @@ async function performInteraction(type: 'food' | 'toy' | 'wash', itemDef: any) {
   // 3. Action Phase
   setTimeout(() => {
     pet.classList.remove('wandering');
-    shakeElement(pet);
-    spawnFloatingEmoji(display, itemDef.emoji);
-
-    // Stat text update
-    const statNames: Record<string, string> = {
-      hunger: '饥饿',
-      happy: '快乐',
-      clean: '清洁',
-      exp: '经验',
-    };
-    const statColors: Record<string, string> = {
-      hunger: '#f59e0b',
-      happy: '#ec4899',
-      clean: '#06b6d4',
-      exp: '#8b5cf6',
-    };
-    spawnFloatingText(
-      display,
-      `+${itemDef.value} ${statNames[itemDef.stat]}`,
-      statColors[itemDef.stat]
-    );
-
-    burstParticles(
-      display,
-      (fx / 100) * display.clientWidth,
-      (fy / 100) * display.clientHeight,
-      12,
-      statColors[itemDef.stat]
-    );
+    pet.classList.remove('micro-move');
+    void pet.offsetWidth;
+    pet.classList.add('micro-move');
+    setTimeout(() => pet.classList.remove('micro-move'), 200);
   }, 1000);
 
   // 4. Cleanup Phase
   setTimeout(() => {
     facility.classList.remove('active');
-    isInteracting = false;
   }, 3500);
 }
 

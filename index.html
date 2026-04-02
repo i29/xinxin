@@ -32,6 +32,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
     rel="stylesheet">
 
+  <!-- Critical CSS for preventing FOUC (Flash of Unstyled Content) -->
+  <link rel="stylesheet" href="/src/style.css">
+
   <!-- Structured Data: SoftwareApplication -->
   <script type="application/ld+json">
   {
@@ -123,35 +126,26 @@
             </header>
 
             <div id="pet-display" class="pet-display">
-              <div id="pet-environment" class="pet-environment">
-                <div id="habitat-sky" class="habitat-layer habitat-sky"></div>
-                <div id="habitat-mid" class="habitat-layer habitat-mid"></div>
-                <div id="habitat-ground" class="habitat-layer habitat-ground"></div>
-              </div>
               <div class="pet-stage-area">
                 <div id="pet-shadow" class="pet-shadow"></div>
                 <div id="pet-avatar" class="pet-avatar"></div>
                 <div id="pet-mood" class="pet-mood"></div>
-                <div id="pet-effects" class="pet-effects"></div>
 
                 <!-- Facilities -->
                 <div id="facility-food" class="environmental-facility">
                   <div class="facility-body">
                     <span class="facility-icon">🥣</span>
                   </div>
-                  <span class="facility-label">餐厅</span>
                 </div>
                 <div id="facility-toy" class="environmental-facility">
                   <div class="facility-body">
                     <span class="facility-icon">🧶</span>
                   </div>
-                  <span class="facility-label">游乐场</span>
                 </div>
                 <div id="facility-wash" class="environmental-facility">
                   <div class="facility-body">
                     <span class="facility-icon">🛁</span>
                   </div>
-                  <span class="facility-label">浴室</span>
                 </div>
               </div>
             </div>

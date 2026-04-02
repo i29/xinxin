@@ -560,11 +560,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 250px;
-  background: #000;
+  min-height: 320px;
+  height: clamp(320px, 40vh, 420px);
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.35) 0%, rgba(30, 41, 59, 0.22) 100%);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 0 20px rgba(15, 23, 42, 0.25);
 }
 
 .pet-environment {
@@ -663,11 +664,15 @@ body {
 /* Restored Core Classes */
 .pet-stage-area {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 .pet-avatar {
@@ -675,6 +680,8 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
+  width: 100%;
+  height: 100%;
   transform: translate(-50%, -50%);
   transition:
     left 2s ease-in-out,
@@ -733,7 +740,27 @@ body {
 }
 
 .pet-avatar.wandering {
-  animation: petWalking 0.6s ease-in-out infinite alternate;
+  animation: none;
+}
+
+/* Tiny one-shot response animation; keeps layout and flip intact */
+.pet-avatar.micro-move .pet-avatar-img {
+  animation: petMicroMove 0.2s ease-out;
+}
+
+@keyframes petMicroMove {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.03);
+    filter: brightness(1.05);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
 }
 
 @keyframes petWalking {
@@ -805,7 +832,8 @@ body {
   box-shadow:
     0 0 10px var(--accent-amber),
     0 0 20px var(--accent-amber);
-  animation: fireflyMove 4s ease-in-out infinite;
+  animation: none;
+  opacity: 0.35;
 }
 
 @keyframes fireflyMove {
@@ -822,7 +850,8 @@ body {
 
 .leaf {
   font-size: 1rem;
-  animation: leafFall 8s linear infinite;
+  animation: none;
+  opacity: 0.35;
 }
 
 @keyframes leafFall {
@@ -846,7 +875,8 @@ body {
   width: 3px;
   height: 3px;
   background: white;
-  animation: snowFall 5s linear infinite;
+  animation: none;
+  opacity: 0.35;
 }
 
 @keyframes snowFall {
@@ -874,14 +904,6 @@ body {
   font-size: 1.5rem;
 }
 
-.pet-effects {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-  border-radius: var(--radius-lg);
-}
-
 @keyframes petIdle {
   0%,
   100% {
@@ -899,24 +921,26 @@ body {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  object-position: center;
+  border-radius: calc(var(--radius-lg) - 4px);
   transition: all var(--transition-slow);
 }
 
 /* Visual Growth Progression via CSS Filters (Interim) */
 .pet-avatar-stage-1 {
-  transform: scale(0.6);
+  transform: scale(0.9);
   filter: brightness(1);
 }
 .pet-avatar-stage-2 {
-  transform: scale(0.7);
+  transform: scale(0.93);
   filter: brightness(1.05) saturate(1.1);
 }
 .pet-avatar-stage-3 {
-  transform: scale(0.8);
+  transform: scale(0.95);
   filter: brightness(1.1) saturate(1.2);
 }
 .pet-avatar-stage-4 {
-  transform: scale(0.9);
+  transform: scale(0.97);
   filter: brightness(1.15) saturate(1.3);
 }
 .pet-avatar-stage-5 {
@@ -924,23 +948,23 @@ body {
   filter: brightness(1.2) saturate(1.4);
 }
 .pet-avatar-stage-6 {
-  transform: scale(1.1);
+  transform: scale(1.01);
   filter: brightness(1.25) saturate(1.5) contrast(1.1);
 }
 .pet-avatar-stage-7 {
-  transform: scale(1.2);
+  transform: scale(1.02);
   filter: brightness(1.3) saturate(1.6) contrast(1.2) drop-shadow(0 0 10px rgba(139, 92, 246, 0.3));
 }
 .pet-avatar-stage-8 {
-  transform: scale(1.3);
+  transform: scale(1.03);
   filter: brightness(1.4) saturate(1.7) contrast(1.3) drop-shadow(0 0 15px rgba(139, 92, 246, 0.5));
 }
 .pet-avatar-stage-9 {
-  transform: scale(1.4);
+  transform: scale(1.04);
   filter: brightness(1.5) saturate(1.8) contrast(1.4) drop-shadow(0 0 20px rgba(139, 92, 246, 0.7));
 }
 .pet-avatar-stage-10 {
-  transform: scale(1.5);
+  transform: scale(1.05);
   filter: contrast(1.1) drop-shadow(0 0 25px rgba(139, 92, 246, 0.8));
 }
 
@@ -1371,98 +1395,6 @@ body {
 .modal-header h2 {
   font-size: 1.2rem;
   font-weight: 600;
-}
-
-.pet-avatar {
-  font-size: 8rem;
-  transition: transform 0.3s ease;
-  user-select: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-}
-
-.pet-avatar-img {
-  max-width: 90%;
-  max-height: 90%;
-  object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
-  animation: float 4s ease-in-out infinite;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Evolution Stage Variations */
-.pet-avatar-stage-1 {
-  transform: scale(1);
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.2));
-}
-.pet-avatar-stage-2 {
-  transform: scale(1.04);
-  filter: saturate(1.1) brightness(1.02) drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
-}
-.pet-avatar-stage-3 {
-  transform: scale(1.08);
-  filter: saturate(1.15) brightness(1.04) drop-shadow(0 0 14px rgba(255, 255, 255, 0.3));
-}
-.pet-avatar-stage-4 {
-  transform: scale(1.12);
-  filter: saturate(1.2) brightness(1.06) drop-shadow(0 0 16px rgba(255, 255, 255, 0.35));
-}
-.pet-avatar-stage-5 {
-  transform: scale(1.16);
-  filter: saturate(1.25) brightness(1.08) drop-shadow(0 0 18px rgba(139, 92, 246, 0.4));
-}
-.pet-avatar-stage-6 {
-  transform: scale(1.2);
-  filter: saturate(1.3) brightness(1.1) drop-shadow(0 0 20px rgba(139, 92, 246, 0.45));
-}
-.pet-avatar-stage-7 {
-  transform: scale(1.24);
-  filter: saturate(1.35) brightness(1.12) drop-shadow(0 0 22px rgba(139, 92, 246, 0.5));
-}
-.pet-avatar-stage-8 {
-  transform: scale(1.28);
-  filter: saturate(1.4) brightness(1.14) drop-shadow(0 0 25px rgba(139, 92, 246, 0.55));
-}
-.pet-avatar-stage-9 {
-  transform: scale(1.32);
-  filter: saturate(1.5) brightness(1.16) contrast(1.1) drop-shadow(0 0 30px rgba(139, 92, 246, 0.6));
-}
-.pet-avatar-stage-10 {
-  transform: scale(1);
-  filter: drop-shadow(0 0 40px rgba(255, 215, 0, 0.5));
-} /* Mythical has its own scale/style */
-
-.pet-display {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 40px;
-  position: relative;
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.5),
-    inset 0 0 30px rgba(255, 255, 255, 0.05);
-}
-
-.pet-display::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: -1;
 }
 
 .modal-close {
@@ -1932,6 +1864,11 @@ body {
     padding: 16px;
   }
 
+  .pet-display {
+    min-height: 280px;
+    height: clamp(280px, 46vh, 360px);
+  }
+
   .tasks-panel {
     max-height: none;
     height: auto;
@@ -1944,6 +1881,11 @@ body {
   }
   .pet-avatar {
     font-size: 6rem;
+  }
+
+  .pet-display {
+    min-height: 250px;
+    height: clamp(250px, 42vh, 320px);
   }
 
   /* Adventure View Stacking */

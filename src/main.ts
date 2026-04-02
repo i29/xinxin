@@ -2,7 +2,6 @@
 // Main Entry - App Router & Init
 // ========================================
 
-import './style.css';
 import {
   load,
   getState,

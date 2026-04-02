@@ -24,7 +24,7 @@ export function initStarField(canvas: HTMLCanvasElement) {
   }
 
   const stars: Star[] = [];
-  const STAR_COUNT = 30; // Reduced from 75 to 30
+  const STAR_COUNT = 10;
 
   for (let i = 0; i < STAR_COUNT; i++) {
     const size = Math.random() * 2 + 0.5;
@@ -32,15 +32,15 @@ export function initStarField(canvas: HTMLCanvasElement) {
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       size: size,
-      speed: Math.random() * 0.2 + 0.03, // Reduced speed
+      speed: 0,
       opacity: Math.random() * 0.6 + 0.2, // Reduced opacity range
-      twinkleSpeed: Math.random() * 0.015 + 0.003, // Reduced twinkle speed
+      twinkleSpeed: 0,
       twinklePhase: Math.random() * Math.PI * 2,
       isLarge: size > 1.2,
     });
   }
 
-  function draw() {
+  function drawStatic() {
     // 1. Draw cached gradient background
     const themeKey = `${currentTheme.primary}-${currentTheme.secondary}`;
     if (themeKey !== lastThemeKey || !cachedGradient) {
@@ -57,9 +57,7 @@ export function initStarField(canvas: HTMLCanvasElement) {
 
     // 2. Draw stars
     for (const star of stars) {
-      star.twinklePhase += star.twinkleSpeed;
-      const twinkle = Math.sin(star.twinklePhase) * 0.3 + 0.7;
-      const alpha = star.opacity * twinkle;
+      const alpha = star.opacity;
 
       // Glow for larger stars
       if (star.isLarge) {
@@ -74,23 +72,16 @@ export function initStarField(canvas: HTMLCanvasElement) {
       ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
       ctx.fill();
 
-      // Slow drift
-      star.y += star.speed;
-      if (star.y > canvas.height) {
-        star.y = 0;
-        star.x = Math.random() * canvas.width;
-      }
     }
-
-    requestAnimationFrame(draw);
   }
 
-  draw();
+  drawStatic();
 
   window.addEventListener('resize', () => {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     cachedGradient = null; // Re-create on next draw
+    drawStatic();
   });
 }
 
@@ -192,7 +183,7 @@ export function renderHabitat(species: any) {
 
   // 2. High-Fidelity Particles
   if (pType !== 'none') {
-    const pCount = 6; // Reduced from 12 to 6
+    const pCount = 0;
     for (let i = 0; i < pCount; i++) {
       const p = document.createElement('div');
       p.className = `env-particle ${pType}`;
@@ -288,7 +279,7 @@ export function burstParticles(
   container: HTMLElement,
   x: number,
   y: number,
-  count: number = 8, // Reduced from 12 to 8
+  count: number = 4,
   color?: string
 ) {
   for (let i = 0; i < count; i++) {
@@ -320,7 +311,7 @@ export function shakeElement(el: HTMLElement) {
 // 3D Tilt Effect for cards
 export function initTiltEffect(el: HTMLElement) {
   let lastTime = 0;
-  const throttleTime = 16; // ~60fps
+  const throttleTime = 48; // ~20fps
 
   el.addEventListener('mousemove', (e) => {
     const currentTime = Date.now();
@@ -357,7 +348,7 @@ export function hatchExplosion(container: HTMLElement) {
   const cx = container.clientWidth / 2;
   const cy = container.clientHeight / 2;
   const colors = ['#fbbf24', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#10b981', '#ffffff'];
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 18; i++) {
     const p = document.createElement('div');
     p.className = 'particle';
     const angle = Math.random() * Math.PI * 2;
