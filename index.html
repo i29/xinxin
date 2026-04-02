@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐣 鑫鑫宠物 - 宠物养成与冒险系统</title>
+  <meta name="description" content="鑫鑫宠物 (Xinxin Pet) 是一款高品质的虚拟宠物养成与冒险游戏。从一颗神秘蛋开始，孵化、喂养、训练你的专属宠物，见证它们的华丽进化并进行刺激的幻兽冒险！" />
+  <meta name="keywords" content="鑫鑫宠物, 宠物养成, 虚拟宠物, 宠物进化, 幻兽冒险, 网页游戏, Xinxin Pet, Pet Care, Evolution Game" />
+  <meta name="author" content="Antigravity Team" />
+  <meta name="theme-color" content="#312e81" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://xinxin-pet.example.com/" />
+  <meta property="og:title" content="🐣 鑫鑫宠物 - 宠物养成与冒险系统" />
+  <meta property="og:description" content="高品质虚拟宠物养成与冒险游戏。开启你的神秘蛋，见证宠物的进化之路！" />
+  <meta property="og:image" content="https://xinxin-pet.example.com/assets/og-image.png" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://xinxin-pet.example.com/" />
+  <meta property="twitter:title" content="🐣 鑫鑫宠物 - 宠物养成与冒险系统" />
+  <meta property="twitter:description" content="高品质虚拟宠物养成与冒险游戏。开启你的神秘蛋，见证宠物的进化之路！" />
+  <meta property="twitter:image" content="https://xinxin-pet.example.com/assets/og-image.png" />
+
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://xinxin-pet.example.com/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Structured Data: SoftwareApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "鑫鑫宠物 (Xinxin Pet)",
+    "operatingSystem": "Web",
+    "applicationCategory": "GameApplication",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "1200"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- Stars background -->
+    <canvas id="stars-canvas"></canvas>
+
+    <main>
+      <!-- View: Egg Selection -->
+      <section id="view-egg-selection" class="view">
+        <header class="view-header">
+          <h1>✨ 选择你的神秘蛋 ✨</h1>
+          <p class="subtitle">每颗蛋都蕴含着不同的生命，轻轻点击来感受它的气息...</p>
+        </header>
+        <div id="egg-grid" class="egg-grid"></div>
+        <div id="egg-hint" class="egg-hint"></div>
+      </section>
+
+      <!-- View: Hatching -->
+      <section id="view-hatching" class="view hidden">
+        <header class="view-header">
+          <h1>🥚 孵化中...</h1>
+          <p class="subtitle">不断点击蛋来加速孵化！</p>
+        </header>
+        <div class="hatching-container">
+          <div id="hatching-egg" class="hatching-egg">
+            <div class="egg-body">
+              <div class="egg-crack crack-1"></div>
+              <div class="egg-crack crack-2"></div>
+              <div class="egg-crack crack-3"></div>
+              <div class="egg-glow"></div>
+            </div>
+          </div>
+          <div class="hatching-progress-container">
+            <div class="hatching-progress-bar">
+              <div id="hatching-progress" class="hatching-progress-fill"></div>
+            </div>
+            <span id="hatching-percent" class="hatching-percent">0%</span>
+          </div>
+          <p id="hatching-clicks" class="hatching-clicks">点击次数: 0</p>
+        </div>
+        <div id="hatch-particles" class="hatch-particles"></div>
+      </section>
+
+      <!-- View: Birth -->
+      <section id="view-birth" class="view hidden">
+        <div class="birth-container">
+          <div id="birth-pet" class="birth-pet"></div>
+          <h1 id="birth-name" class="birth-name"></h1>
+          <p id="birth-desc" class="birth-desc"></p>
+          <button id="birth-continue" class="btn btn-primary btn-glow">开始养成之旅 🌟</button>
+        </div>
+      </section>
+
+      <!-- View: Pet Nurture (Main) -->
+      <section id="view-nurture" class="view hidden">
+        <div class="nurture-layout">
+          <!-- Left Panel: Pet & Stats -->
+          <article class="pet-panel glass-card">
+            <header class="pet-info-header">
+              <div class="pet-title-group">
+                <span id="pet-name" class="pet-name-label"></span>
+                <span id="pet-stage" class="pet-stage-badge"></span>
+              </div>
+              <div class="coin-display">
+                <span class="coin-icon">🪙</span>
+                <span id="coin-amount">0</span>
+              </div>
+            </header>
+
+            <div id="pet-display" class="pet-display">
+              <div id="pet-environment" class="pet-environment">
+                <div id="habitat-sky" class="habitat-layer habitat-sky"></div>
+                <div id="habitat-mid" class="habitat-layer habitat-mid"></div>
+                <div id="habitat-ground" class="habitat-layer habitat-ground"></div>
+              </div>
+              <div class="pet-stage-area">
+                <div id="pet-shadow" class="pet-shadow"></div>
+                <div id="pet-avatar" class="pet-avatar"></div>
+                <div id="pet-mood" class="pet-mood"></div>
+                <div id="pet-effects" class="pet-effects"></div>
+
+                <!-- Facilities -->
+                <div id="facility-food" class="environmental-facility">
+                  <div class="facility-body">
+                    <span class="facility-icon">🥣</span>
+                  </div>
+                  <span class="facility-label">餐厅</span>
+                </div>
+                <div id="facility-toy" class="environmental-facility">
+                  <div class="facility-body">
+                    <span class="facility-icon">🧶</span>
+                  </div>
+                  <span class="facility-label">游乐场</span>
+                </div>
+                <div id="facility-wash" class="environmental-facility">
+                  <div class="facility-body">
+                    <span class="facility-icon">🛁</span>
+                  </div>
+                  <span class="facility-label">浴室</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="pet-level-bar">
+              <div class="level-info">
+                <span id="pet-level" class="level-text">Lv.1</span>
+                <span id="pet-exp" class="exp-text">0/100</span>
+              </div>
+              <div class="exp-bar">
+                <div id="exp-fill" class="exp-fill"></div>
+              </div>
+              <span id="next-evolution" class="next-evolution-text"></span>
+            </div>
+
+            <div class="pet-stats">
+              <div class="stat-row">
+                <span class="stat-icon">🍖</span>
+                <div class="stat-bar">
+                  <div id="hunger-fill" class="stat-fill hunger-fill"></div>
+                </div>
+                <span id="hunger-value" class="stat-value">100</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">😊</span>
+                <div class="stat-bar">
+                  <div id="happy-fill" class="stat-fill happy-fill"></div>
+                </div>
+                <span id="happy-value" class="stat-value">100</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-icon">🛁</span>
+                <div class="stat-bar">
+                  <div id="clean-fill" class="stat-fill clean-fill"></div>
+                </div>
+                <span id="clean-value" class="stat-value">100</span>
+              </div>
+            </div>
+
+            <div class="inventory-section">
+              <h3>🎒 背包</h3>
+              <div id="inventory-grid" class="inventory-grid"></div>
+            </div>
+
+              <div class="pet-switcher">
+              <div id="pet-slot-display" class="pet-slot-display">
+                <!-- Slots will be rendered here -->
+              </div>
+              <button id="btn-new-pet" class="btn-icon-plus" title="养新宠物">+</button>
+            </div>
+
+            <button id="nav-adventure" class="btn btn-primary btn-glow" style="margin-top: auto; width: 100%;">🗡️
+              开始冒险</button>
+          </article>
+
+          <!-- Right Panel: Tasks & Tabs -->
+          <aside class="tasks-panel glass-card">
+            <div class="tasks-tabs">
+              <button class="tab-btn active" data-tab="daily">📋 任务</button>
+              <button class="tab-btn" data-tab="shop">🏪 商店</button>
+              <button class="tab-btn" data-tab="achievement">🏆 成就</button>
+              <button class="tab-btn" data-tab="challenge">⚡ 挑战</button>
+              <button class="tab-btn" data-tab="journal">📖 日志</button>
+            </div>
+            <div id="tasks-content" class="tasks-content">
+              <!-- Tasks rendered here -->
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- View: Adventure / Combat -->
+      <section id="view-adventure" class="view hidden">
+        <div class="adventure-container glass-card">
+          <header class="adventure-header">
+            <button class="btn btn-sm btn-amber" id="adventure-back">⬅ 返回</button>
+            <h2 id="adventure-title">⚔️ 幻兽冒险</h2>
+            <div id="adventure-stage-info" class="stage-info">关卡 1-1</div>
+          </header>
+
+          <div class="battle-arena">
+            <div class="battle-unit player-unit">
+              <div class="unit-status">
+                <div class="unit-hp-bar">
+                  <div id="player-hp-fill" class="hp-fill"></div>
+                </div>
+                <div class="mp-bar">
+                  <div id="player-mp-fill" class="mp-fill"></div>
+                </div>
+                <div id="player-battle-name" class="unit-name">我的宠物</div>
+              </div>
+              <div id="player-battle-visual" class="unit-visual">🐱</div>
+            </div>
+
+            <div class="battle-vs">VS</div>
+
+            <div class="battle-unit enemy-unit">
+              <div class="unit-status">
+                <div class="unit-hp-bar">
+                  <div id="enemy-hp-fill" class="hp-fill"></div>
+                </div>
+                <div id="enemy-battle-name" class="unit-name">森林史莱姆</div>
+              </div>
+              <div id="enemy-battle-visual" class="unit-visual">💧</div>
+            </div>
+          </div>
+
+          <div id="battle-log" class="battle-log">
+            <p>遇到了一只怪物！战斗开始！</p>
+          </div>
+
+          <div id="battle-controls" class="battle-controls">
+            <button class="btn btn-primary" id="btn-attack">⚔️ 攻击</button>
+            <button class="btn btn-success" id="btn-defend">🛡️ 防御</button>
+            <button class="btn btn-amber" id="btn-skill">✨ 技能</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Task Mini-Game Modal -->
+      <div id="minigame-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content glass-card">
+          <header class="modal-header">
+            <h2 id="minigame-title"></h2>
+            <button id="minigame-close" class="modal-close">✕</button>
+          </header>
+          <div id="minigame-body" class="modal-body"></div>
+        </div>
+      </div>
+
+      <!-- Evolution Modal -->
+      <div id="evolution-modal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content evolution-content">
+          <div id="evolution-animation" class="evolution-animation"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
