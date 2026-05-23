@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">29.41% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>5/17</span>
+                <span class='fraction'>17/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">25% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">16.66% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/6</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">28.57% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/14</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -157,7 +157,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">76x</span>
+<span class="cline-any cline-yes">161x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,9 +165,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">76x</span>
-<span class="cline-any cline-yes">76x</span>
-<span class="cline-any cline-yes">76x</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-yes">161x</span>
+<span class="cline-any cline-yes">161x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -178,32 +178,32 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// ========================================
 // Journal System - Game Event Logging
@@ -216,7 +216,7 @@ export interface JournalEntry {
   event: string;
   details: string;
   type: 'birth' | 'level_up' | 'evolution' | 'milestone';
-  data?: any;
+  data?: Record&lt;string, unknown&gt;;
 }
 &nbsp;
 /**
@@ -226,7 +226,7 @@ export function addJournalEntry(
   type: JournalEntry['type'],
   event: string,
   details: string,
-  data?: any
+  data?: Record&lt;string, unknown&gt;
 ) {
   gameData.journal.unshift({
     timestamp: Date.now(),
@@ -244,37 +244,37 @@ export function addJournalEntry(
 /**
  * Get journal entries with optional filtering
  */
-export function <span class="fstat-no" title="function not covered" >getJournalEntries(o</span>ptions?: {
+export function getJournalEntries(options?: {
   type?: JournalEntry['type'];
   limit?: number;
   offset?: number;
 }): JournalEntry[] {
-  let entries = <span class="cstat-no" title="statement not covered" >[...gameData.journal];</span>
+  let entries = [...gameData.journal];
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  if (options?.type) {</span>
-<span class="cstat-no" title="statement not covered" >    entries = entries.<span class="fstat-no" title="function not covered" >filter((e</span>) =&gt; <span class="cstat-no" title="statement not covered" >e.type === options.type);</span></span>
+  if (options?.type) {
+    entries = entries.filter((e) =&gt; e.type === options.type);
   }
 &nbsp;
-  const offset = <span class="cstat-no" title="statement not covered" >options?.offset || 0;</span>
-  const limit = <span class="cstat-no" title="statement not covered" >options?.limit || entries.length;</span>
+  const offset = options?.offset || 0;
+  const limit = options?.limit || entries.length;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return entries.slice(offset, offset + limit);</span>
+  return entries.slice(offset, offset + limit);
 }
 &nbsp;
 /**
  * Clear journal (use with caution)
  */
-export function <span class="fstat-no" title="function not covered" >clearJournal() {</span>
-<span class="cstat-no" title="statement not covered" >  gameData.journal = [];</span>
-<span class="cstat-no" title="statement not covered" >  save();</span>
-<span class="cstat-no" title="statement not covered" >  notify();</span>
+export function clearJournal() {
+  gameData.journal = [];
+  save();
+  notify();
 }
 &nbsp;
 /**
  * Get entry count by type
  */
-export function <span class="fstat-no" title="function not covered" >getEntryCountByType(t</span>ype: JournalEntry['type']): number {
-<span class="cstat-no" title="statement not covered" >  return gameData.journal.<span class="fstat-no" title="function not covered" >filter((e</span>: JournalEntry) =&gt; <span class="cstat-no" title="statement not covered" >e.type === type).</span>length;</span>
+export function getEntryCountByType(type: JournalEntry['type']): number {
+  return gameData.journal.filter((e: JournalEntry) =&gt; e.type === type).length;
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -283,7 +283,7 @@ export function <span class="fstat-no" title="function not covered" >getEntryCou
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-03-25T15:24:10.879Z
+                at 2026-04-08T06:44:06.731Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

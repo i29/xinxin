@@ -63,7 +63,7 @@ export class CombatEngine {
   }
 
   // Simple Monster AI
-  static getMonsterAction(_monster: BattleEntity): 'attack' | 'heavy' {
+  static getMonsterAction(): 'attack' | 'heavy' {
     // 20% chance for a heavy attack
     return Math.random() < 0.2 ? 'heavy' : 'attack';
   }
@@ -87,12 +87,7 @@ export function generateRivalPetForLevel(zone: number, stage: number): BattleEnt
 
   const stats = calculateStats(species, monsterLevel);
   // Scale based on zone: early monsters are slightly weaker than player's level-equivalent stats
-  let scale = 1.0;
-  if (zone === 0)
-    scale = 0.85; // Zone 0: easier introduction
-  else if (zone === 1)
-    scale = 1.0; // Zone 1: standard
-  else scale = 1.15; // Zone 2: challenging
+  const scale = zone === 0 ? 0.85 : zone === 1 ? 1.0 : 1.15;
 
   return {
     name: `${attr}${stageDef.name}`,

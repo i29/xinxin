@@ -2,6 +2,8 @@
 // Animations - Particles, Effects, Stars
 // ========================================
 
+import type { PetSpecies } from './petData';
+
 // Star field background
 let cachedGradient: CanvasGradient | null = null;
 let lastThemeKey = '';
@@ -113,7 +115,7 @@ const SPECIES_THEMES: Record<string, { primary: string; secondary: string; accen
   unicorn: { primary: '#0a1a1a', secondary: '#164e63', accent: '#67e8f9' }, // Dark Teal -> Cyan
 };
 
-let currentTheme = { primary: '#0a0e1a', secondary: '#0f1629', accent: '#8b5cf6' };
+const currentTheme = { primary: '#0a0e1a', secondary: '#0f1629', accent: '#8b5cf6' };
 
 export function updateEnvironment(speciesId: string, stageIndex: number) {
   const theme = SPECIES_THEMES[speciesId] || SPECIES_THEMES.cat;
@@ -159,7 +161,7 @@ export function updatePetShadow(x: string, y: string, visible: boolean = true) {
   }
 }
 
-export function renderHabitat(species: any) {
+export function renderHabitat(species: PetSpecies) {
   const display = document.getElementById('pet-display')!;
   const sky = document.getElementById('habitat-sky')!;
   const ground = document.getElementById('habitat-ground')!;
@@ -246,7 +248,7 @@ export function renderHabitat(species: any) {
   display.appendChild(overlay);
 }
 
-export function updateFacilityIcons(species: any) {
+export function updateFacilityIcons(species: PetSpecies): void {
   const foodIcon = document.querySelector('#facility-food .facility-icon');
   const toyIcon = document.querySelector('#facility-toy .facility-icon');
   const washIcon = document.querySelector('#facility-wash .facility-icon');

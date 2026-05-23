@@ -106,7 +106,7 @@ export function load(): GameStateData {
   const raw = localStorage.getItem(SAVE_KEY);
   if (raw) {
     try {
-      const parsed = JSON.parse(raw) as Record<string, any>;
+      const parsed = JSON.parse(raw) as any;
 
       // Data Migration: Single pet to Pets array
       if (parsed.pet && (!parsed.pets || parsed.pets.length === 0)) {

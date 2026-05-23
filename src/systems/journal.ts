@@ -9,7 +9,7 @@ export interface JournalEntry {
   event: string;
   details: string;
   type: 'birth' | 'level_up' | 'evolution' | 'milestone';
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 /**
@@ -19,7 +19,7 @@ export function addJournalEntry(
   type: JournalEntry['type'],
   event: string,
   details: string,
-  data?: any
+  data?: Record<string, unknown>
 ) {
   gameData.journal.unshift({
     timestamp: Date.now(),

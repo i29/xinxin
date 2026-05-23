@@ -140,12 +140,9 @@ async function handlePlayerAction(action: 'attack' | 'defend' | 'skill') {
   if (isBattleOver) return;
   setControlsEnabled(false);
 
-  let damage = 0;
-  let logMsg = '';
-
   const pet = getActivePet()!;
   if (!pet.stats) {
-    logMsg = `战斗初始化失败：宠物属性缺失。`;
+    const logMsg = `战斗初始化失败：宠物属性缺失。`;
     addLog(logMsg, 'system');
     setControlsEnabled(true);
     return;
@@ -166,7 +163,7 @@ async function handlePlayerAction(action: 'attack' | 'defend' | 'skill') {
     if (result.isMiss) {
       addLog(`${pet.name} 的攻击落空了！`, 'system');
     } else {
-      damage = result.damage;
+      const damage = result.damage;
       addLog(
         `${pet.name} 发动攻击，造成了 ${damage} 点伤害！${result.isCrit ? ' (关键一击! 💥)' : ''}${atkBuffTurns > 0 ? ' 🔥' : ''}`,
         'player'
@@ -192,7 +189,7 @@ async function handlePlayerAction(action: 'attack' | 'defend' | 'skill') {
     if (result.isMiss) {
       addLog(`${pet.name} 使用了「${skill.name}」，但是打偏了！`, 'skill');
     } else {
-      damage = result.damage;
+      const damage = result.damage;
       addLog(`${pet.name} 释放技能「${skill.name}」，重创敌人造成 ${damage} 点伤害！`, 'skill');
       currentEnemy!.stats.hp = Math.max(0, currentEnemy!.stats.hp - damage);
       animateUnit('enemy', 'hit');
@@ -238,7 +235,7 @@ async function handlePlayerAction(action: 'attack' | 'defend' | 'skill') {
       currentEnemy!.isStunned = false;
       addLog(`${currentEnemy!.name} 处于眩晕状态，无法行动！`, 'system');
     } else {
-      const monsterAction = CombatEngine.getMonsterAction(currentEnemy!);
+      const monsterAction = CombatEngine.getMonsterAction();
       let multiplier = 1;
       let enemyLog = '';
 

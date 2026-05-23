@@ -313,7 +313,6 @@ function startClickGame(task: TaskDef) {
   const body = document.getElementById('minigame-body')!;
   let clicks = 0;
   let timeLeft = 10;
-  let timer: ReturnType<typeof setInterval>;
 
   body.innerHTML = `
     <div class="click-game-area">
@@ -337,7 +336,7 @@ function startClickGame(task: TaskDef) {
     }, 100);
   });
 
-  timer = setInterval(() => {
+  const timer = setInterval(() => {
     timeLeft--;
     timeEl.textContent = String(timeLeft);
     if (timeLeft <= 0) {
@@ -491,7 +490,7 @@ function startPatternChallenge() {
   openModal('🧩 模式记忆挑战');
   const body = document.getElementById('minigame-body')!;
   const emojis = ['🍎', '🍌', '🍇', '🍒', '🥝', '🫐'];
-  let pattern: string[] = [];
+  const pattern: string[] = [];
   let userPattern: string[] = [];
   let level = 1;
   const maxLevels = 5;

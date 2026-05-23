@@ -14,7 +14,7 @@ export interface JournalEntry {
   event: string;
   details: string;
   type: 'birth' | 'level_up' | 'evolution' | 'milestone';
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 export interface PetState {

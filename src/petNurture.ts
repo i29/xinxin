@@ -2,7 +2,7 @@
 // Pet Nurture View - Main Dashboard
 // ========================================
 
-import { getState, getSpecies, getActivePet, useItem, tickStatDecay, notify } from './gameState';
+import { getState, getSpecies, getActivePet, useItem, tickStatDecay, notify, switchPet, startNewPetProcess } from './gameState';
 import type { EvolutionStage } from './petData';
 import {
   ITEMS,
@@ -195,7 +195,7 @@ function renderPetSlots() {
     slot.title = `${pet.name} (Lv.${pet.level})`;
     slot.onclick = () => {
       if (index !== state.activePetIndex) {
-        import('./gameState').then((m) => m.switchPet(index));
+        switchPet(index);
       }
     };
     slotContainer.appendChild(slot);
@@ -204,7 +204,7 @@ function renderPetSlots() {
   // Limit pets to 2 for now
   btnNewPet.disabled = state.pets.length >= 2;
   btnNewPet.onclick = () => {
-    import('./gameState').then((m) => m.startNewPetProcess());
+    startNewPetProcess();
   };
 }
 

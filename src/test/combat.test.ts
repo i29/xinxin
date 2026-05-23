@@ -136,14 +136,12 @@ describe('CombatEngine', () => {
 
   describe('getMonsterAction', () => {
     it('should return attack or heavy attack', () => {
-      const monster = createEntity({ isPlayer: false });
-      
       mockMathRandom(0.1); // Less than 0.2, should be 'heavy'
-      const action1 = CombatEngine.getMonsterAction(monster);
+      const action1 = CombatEngine.getMonsterAction();
       expect(action1).toBe('heavy');
 
       mockMathRandom(0.3); // Greater than 0.2, should be 'attack'
-      const action2 = CombatEngine.getMonsterAction(monster);
+      const action2 = CombatEngine.getMonsterAction();
       expect(action2).toBe('attack');
     });
   });
